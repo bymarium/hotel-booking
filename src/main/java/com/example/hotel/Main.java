@@ -97,16 +97,6 @@ public class Main {
     // endregion
 
     // region hotel
-    public static List<String> createHotelsKeys() {
-        List<String> hotelKeys = new ArrayList<>();
-        hotelKeys.add("Nombre");
-        hotelKeys.add("Calificacion");
-        hotelKeys.add("Precio por noche");
-        hotelKeys.add("Precio calculado por dias");
-
-        return hotelKeys;
-    }
-
     public static List<List<String>> createHotelsValues(int days) {
         List<String> cities = createCities();
         List<String> typeOfHousing = createHousing();
@@ -144,46 +134,32 @@ public class Main {
     }
 
 
-    public static void getHotel() {
-        List<String> keys = createHotelsKeys();
-        List<List<String>> hotels = createHotelsValues(6);
-
-        System.out.println("Hoteles disponibles:");
-        for (int i = 0; i < hotels.size(); i++) {
-            System.out.println((i + 1) + ":");
-            List<String> hotelValues = hotels.get(i);
-
-            for (int j = 0; j < keys.size(); j++) {
-                System.out.println("  " + keys.get(j) + ": " + hotelValues.get(j));
-            }
-            System.out.println();
-        }
-
-        Scanner sc = new Scanner(System.in);
-        int hotel = -1;
-
-        while (true) {
-            try {
-                System.out.print("\nEscribe el número del hotel que deseas seleccionar (1-" + hotels.size() + "): ");
-                hotel = sc.nextInt();
-
-                if (hotel > 0 && hotel <= hotels.size()) {
-                    List<String> selectedHotel = hotels.get(hotel - 1);
-                    System.out.println("\nDetalles del Hotel: " );
-                    for (int i = 0; i < keys.size(); i++) {
-                        System.out.println(keys.get(i) + ": " + selectedHotel.get(i));
-                    }
-                    break;
-                } else {
-                    System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
-                }
-            } catch (Exception e) {
-                System.out.println("Entrada no válida. Inténtalo de nuevo.");
-                sc.next();
-            }
+    public static void getHotels(List<List<String>> hotels) {
+        System.out.println("Listado de hoteles:");
+        for (List<String> hotel : hotels) {
+            System.out.println("Ciudad: " + hotel.get(0));
+            System.out.println("Alojamiento: " + hotel.get(1));
+            System.out.println("Nombre: " + hotel.get(2));
+            System.out.println("Calificacion: $" + hotel.get(3));
+            System.out.println("Precio por dia: $" + hotel.get(4));
+            System.out.println("Precio calculado por dias: $" + hotel.get(5));
+            System.out.println("-----------------------------------");
         }
     }
 
+    public static void getHotelByCityAndHousing(List<List<String>> hotels, String city, String housing) {
+        System.out.println("Listado de hoteles:");
+        for (List<String> hotel : hotels) {
+            if ( hotel.get(0).equals(city) && hotel.get(1).equals(housing)) {
+                System.out.println("Nombre: " + hotel.get(2));
+                System.out.println("Calificacion: $" + hotel.get(3));
+                System.out.println("Precio por dia: $" + hotel.get(4));
+                System.out.println("Precio calculado por dias: $" + hotel.get(5));
+                System.out.println("-----------------------------------");
+            }
+        }
+
+    }
     // endregion
 
     // region type of room
