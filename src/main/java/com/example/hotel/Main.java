@@ -166,4 +166,58 @@ public class Main {
     }
 
     // endregion
+
+    // region type of room
+    public static List<String> createTypesOfRoom() {
+        List<String> types = new ArrayList<>();
+        types.add("Habitacion Sencilla");
+        types.add("Habitacion Doble");
+        types.add("Habitacion Triple");
+        types.add("Habitacion Suite");
+        types.add("Habitacion Suite Deluxe");
+
+        return types;
+    }
+
+    public static List<List<String>> createRooms() {
+        List<String> housings = createHousing();
+        List<String> roomTypes = createTypesOfRoom();
+        List<List<String>> rooms = new ArrayList<>();
+
+        // Hotel rooms
+        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado y Wi-Fi gratuito.", "100"));
+        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado y desayuno incluido.", "150"));
+        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica y servicio a la habitación 24/7.", "300"));
+        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada y acceso exclusivo al spa.", "500"));
+
+        // Apartment rooms
+        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(0), "Estudio moderno con cocina equipada, cama individual, baño privado y balcón.", "150"));
+        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(2), "Apartamento de 2 habitaciones, cocina completa, sala de estar y terraza con vista a la ciudad.", "300"));
+        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(3), "Penthouse con 3 dormitorios, jacuzzi, sala de cine, terraza privada y ascensor exclusivo.", "600"));
+
+        // Country house (Finca) rooms
+        rooms.add(Arrays.asList(housings.get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño compartido, chimenea y vista a las montañas.", "120"));
+        rooms.add(Arrays.asList(housings.get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno con productos locales y acceso a piscina natural.", "250"));
+        rooms.add(Arrays.asList(housings.get(2), roomTypes.get(4), "Suite Deluxe en finca, con jacuzzi al aire libre, terraza con hamacas y vistas al valle.", "450"));
+
+        // Day-use (Día de Sol) rooms
+        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(1), "Habitación doble para uso diurno, incluye acceso a piscina, almuerzo buffet y bebidas.", "80"));
+        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(2), "Habitación triple con acceso a zonas recreativas, spa y transporte incluido.", "120"));
+        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(4), "Suite Deluxe para uso diurno, incluye piscina privada, almuerzo gourmet y servicio de masajes.", "300"));
+
+        return rooms;
+    }
+
+    public static void displayRooms(List<List<String>> rooms) {
+        System.out.println("Listado de habitaciones:");
+        for (List<String> room : rooms) {
+            System.out.println("Alojamiento: " + room.get(0));
+            System.out.println("Tipo de Habitación: " + room.get(1));
+            System.out.println("Descripción: " + room.get(2));
+            System.out.println("Precio: $" + room.get(3));
+            System.out.println("-----------------------------------");
+        }
+    }
+
+    // endregion
 }
