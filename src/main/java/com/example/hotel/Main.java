@@ -1,13 +1,10 @@
 package com.example.hotel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        createRoomsForHousing(5);
+        createDesiredAccommodation("Bogotá", "Hotel", new Date(2022, 1, 1), new Date(2022, 1, 5), 2, 0, 2);
     }
 
     // region city
@@ -141,25 +138,62 @@ public class Main {
             System.out.println("Alojamiento: " + hotel.get(1));
             System.out.println("Nombre: " + hotel.get(2));
             System.out.println("Calificacion: $" + hotel.get(3));
-            System.out.println("Precio por dia: $" + hotel.get(4));
+            System.out.println("Precio por noche: $" + hotel.get(4));
             System.out.println("Precio calculado por dias: $" + hotel.get(5));
             System.out.println("-----------------------------------");
         }
     }
 
-    public static void getHotelByCityAndHousing(List<List<String>> hotels, String city, String housing) {
+    public static void getHotel(List<String> hotel) {
+        System.out.println("  Nombre: " + hotel.get(2));
+        System.out.println("  Calificación: " + hotel.get(3));
+        System.out.println("  Precio por noche: $" + hotel.get(4));
+        System.out.println("  Precio calculado por días: $" + hotel.get(5));
+    }
+
+    public static List<String> getHotelByCityAndHousing(List<List<String>> hotels, String city, String housing) {
+        Scanner sc = new Scanner(System.in);
+
         System.out.println("Listado de hoteles:");
+        int index = 1;
         for (List<String> hotel : hotels) {
-            if ( hotel.get(0).equals(city) && hotel.get(1).equals(housing)) {
-                System.out.println("Nombre: " + hotel.get(2));
-                System.out.println("Calificacion: $" + hotel.get(3));
-                System.out.println("Precio por dia: $" + hotel.get(4));
-                System.out.println("Precio calculado por dias: $" + hotel.get(5));
+            if (hotel.get(0).equals(city) && hotel.get(1).equals(housing)) {
+                System.out.println(index + ":");
+                getHotel(hotel);
                 System.out.println("-----------------------------------");
+                index++;
             }
         }
+        if (index == 1) {
+            System.out.println("No se encontraron hoteles que coincidan con los criterios.");
+        }
 
+        int selection = -1;
+        while (true) {
+            try {
+                System.out.print("\nEscribe el número del hotel que deseas seleccionar (1-" + (index - 1) + "): ");
+                selection = sc.nextInt();
+
+                if (selection > 0 && selection < index) {
+                    int currentIndex = 1;
+                    for (List<String> hotel : hotels) {
+                        if (hotel.get(0).equals(city) && hotel.get(1).equals(housing)) {
+                            if (currentIndex == selection) {
+                                return hotel;
+                            }
+                            currentIndex++;
+                        }
+                    }
+                } else {
+                    System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada no válida. Inténtalo de nuevo.");
+                sc.next();
+            }
+        }
     }
+
     // endregion
 
     // region type of room
@@ -259,6 +293,16 @@ public class Main {
             System.out.println("Habitaciones disponibles: " + hotelWithRoom.get(9));
             System.out.println("-----------------------------------");
         }
+    }
+    // endregion
+
+    // region desired accommodation
+    public static void createDesiredAccommodation(String city, String housingType, Date startDate, Date endDate, int numberOfAdults, int numberOfChildren, int numberOfRooms) {
+        long daysBetween = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+
+        List<String> hotel = getHotelByCityAndHousing(createHotelsValues((int) daysBetween), city, housingType);
+        System.out.println("Hotel seleccionado: ");
+        getHotel(hotel);
     }
     // endregion
 }
