@@ -1,13 +1,15 @@
 package com.example.hotel;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        //createDesiredAccommodation("Bogotá", "Hotel", new Date(2022, 1, 1), new Date(2022, 1, 5), 2, 0, 2);
+        LocalDate startDate = LocalDate.of(2025, 2, 23);
+        LocalDate endDate = LocalDate.of(2025, 2, 28);
 
-        List<List<String>> hotels = updatePriceHotel(createRooms(10), createHotelsValues(100, 10));
-        getHotels(hotels);
+        createDesiredAccommodation("Bogotá", "Hotel", startDate, endDate, 2, 0, 2);
     }
 
     // region city
@@ -316,7 +318,7 @@ public class Main {
     // endregion
 
     // region rooms available
-    public static List<List<String>> updatePriceHotel(List<List<String>> rooms, List<List<String>> hotels) {
+    public static List<List<String>> updatePriceHotel(List<List<String>> rooms, List<List<String>> hotels, int daysBetween) {
         for (List<String> hotel : hotels) {
             String hotelName = hotel.get(2);
             double minPrice = Double.MAX_VALUE;
@@ -330,6 +332,7 @@ public class Main {
             }
 
             hotel.set(4, String.valueOf(minPrice));
+            hotel.set(5, String.valueOf(minPrice * daysBetween));
         }
 
         return hotels;
@@ -395,16 +398,55 @@ public class Main {
     // endregion
 
     // region desired accommodation
-    public static void createDesiredAccommodation(String city, String housingType, Date startDate, Date endDate,
+    public static void createDesiredAccommodation(String city, String housingType, LocalDate startDate, LocalDate endDate,
                                                   int numberOfAdults, int numberOfChildren, int numberOfRooms) {
-        long daysBetween = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
+        long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
 
-        List<String> hotel = getHotelByCityAndHousing(createHotelsValues(100,(int) daysBetween), city, housingType);
-        System.out.println("Hotel seleccionado: ");
+        List<List<String>> rooms = createRooms((int) daysBetween);
+        List<List<String>> hotels = updatePriceHotel(rooms, createHotelsValues(100,(int) daysBetween), (int)daysBetween);
+
+        List<String> hotel = getHotelByCityAndHousing(hotels, city, housingType);
+        System.out.println("\nHotel seleccionado: ");
         getHotel(hotel);
-        List<String> room = getRoomsForHousing(createRooms((int) daysBetween), hotel);
-        System.out.println("Habitación seleccionada: ");
-        getRoom(room);
+
+        double price = Double.parseDouble(hotel.get(5));
+        double totalPrice = price * numberOfRooms;
+        System.out.println("\nPrecio base con " + numberOfRooms + " habitaciones: $" + totalPrice);
+
+        int startDay = startDate.getDayOfMonth();
+        int endDay = endDate.getDayOfMonth();
+
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(java.sql.Date.valueOf(startDate));
+        int lastDayOfStartMonth = startCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTime(java.sql.Date.valueOf(endDate));
+        int lastDayOfEndMonth = endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        double percentageApplied = 0;
+        double adjustmentAmount = 0;
+
+        if ((startDay >= lastDayOfStartMonth - 4) && (endDay >= lastDayOfEndMonth - 4)) {
+            percentageApplied = 0.15;
+            adjustmentAmount = totalPrice * percentageApplied;
+            totalPrice += adjustmentAmount;
+            System.out.println("Se aplicó un aumento del 15%: +$" + adjustmentAmount);
+        } else if ((startDay >= 10 && startDay <= 15) && (endDay >= 10 && endDay <= 15)) {
+            percentageApplied = 0.10;
+            adjustmentAmount = totalPrice * percentageApplied;
+            totalPrice += adjustmentAmount;
+            System.out.println("Se aplicó un aumento del 10%: +$" + adjustmentAmount);
+        } else if ((startDay >= 5 && startDay <= 10) && (endDay >= 5 && endDay <= 10)) {
+            percentageApplied = -0.08;
+            adjustmentAmount = totalPrice * Math.abs(percentageApplied);
+            totalPrice -= adjustmentAmount;
+            System.out.println("Se aplicó un descuento del 8%: -$" + adjustmentAmount);
+        } else {
+            System.out.println("No se aplicó descuento ni aumento.");
+        }
+
+        System.out.println("Precio total del hotel después de ajustes: $" + totalPrice);
     }
     // endregion
 }
