@@ -4,7 +4,10 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        createDesiredAccommodation("Bogotá", "Hotel", new Date(2022, 1, 1), new Date(2022, 1, 5), 2, 0, 2);
+        //createDesiredAccommodation("Bogotá", "Hotel", new Date(2022, 1, 1), new Date(2022, 1, 5), 2, 0, 2);
+
+        List<List<String>> hotels = updatePriceHotel(createRooms(10), createHotelsValues(100, 10));
+        getHotels(hotels);
     }
 
     // region city
@@ -94,38 +97,38 @@ public class Main {
     // endregion
 
     // region hotel
-    public static List<List<String>> createHotelsValues(int days) {
+    public static List<List<String>> createHotelsValues(int price, int days) {
         List<String> cities = createCities();
         List<String> typeOfHousing = createHousing();
         List<List<String>> allHotels = new ArrayList<>();
 
         // Hoteles
-        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(0), "Marriott Hotel", "4.5", "150", String.valueOf(days * 150)));
-        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(0), "Hilton Garden Inn", "4.4", "120", String.valueOf(days * 120)));
-        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(0), "Ritz-Carlton", "5.0", "500", String.valueOf(days * 500)));
-        allHotels.add(Arrays.asList(cities.get(3), typeOfHousing.get(0), "Holiday Inn", "4.2", "110", String.valueOf(days * 110)));
-        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(0), "Sheraton", "4.3", "140", String.valueOf(days * 140)));
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(0), "Marriott Hotel", "4.5", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(0), "Hilton Garden Inn", "4.4", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(0), "Ritz-Carlton", "5.0", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(3), typeOfHousing.get(0), "Holiday Inn", "4.2", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(0), "Sheraton", "4.3", String.valueOf(price), String.valueOf(days * price)));
 
         // Apartamentos
-        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(1), "Apartamento Luxury", "4.7", "80", String.valueOf(days * 80)));
-        allHotels.add(Arrays.asList(cities.get(1), typeOfHousing.get(1), "Apartamento Vista Mar", "4.6", "90", String.valueOf(days * 90)));
-        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(1), "Apartamento Moderno", "4.5", "75", String.valueOf(days * 75)));
-        allHotels.add(Arrays.asList(cities.get(5), typeOfHousing.get(1), "Apartamento Familiar", "4.8", "100", String.valueOf(days * 100)));
-        allHotels.add(Arrays.asList(cities.get(7), typeOfHousing.get(1), "Apartamento en el Centro", "4.4", "85", String.valueOf(days * 85)));
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(1), "Apartamento Luxury", "4.7", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(1), typeOfHousing.get(1), "Apartamento Vista Mar", "4.6", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(1), "Apartamento Moderno", "4.5", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(5), typeOfHousing.get(1), "Apartamento Familiar", "4.8", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(7), typeOfHousing.get(1), "Apartamento en el Centro", "4.4", String.valueOf(price), String.valueOf(days * price)));
 
         // Fincas
-        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(2), "Finca El Paraíso", "4.9", "200", String.valueOf(days * 200)));
-        allHotels.add(Arrays.asList(cities.get(1), typeOfHousing.get(2), "Finca La Esperanza", "4.6", "250", String.valueOf(days * 250)));
-        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(2), "Finca El Refugio", "4.8", "220", String.valueOf(days * 220)));
-        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(2), "Finca Santa Isabel", "4.7", "180", String.valueOf(days * 180)));
-        allHotels.add(Arrays.asList(cities.get(6), typeOfHousing.get(2), "Finca Las Palmas", "4.5", "170", String.valueOf(days * 170)));
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(2), "Finca El Paraíso", "4.9", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(1), typeOfHousing.get(2), "Finca La Esperanza", "4.6", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(2), "Finca El Refugio", "4.8", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(2), "Finca Santa Isabel", "4.7", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(6), typeOfHousing.get(2), "Finca Las Palmas", "4.5", String.valueOf(price), String.valueOf(days * price)));
 
         // Día de Sol
-        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(3), "Día de Sol Aventura", "4.5", "60", String.valueOf(days * 60)));
-        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(3), "Día de Sol Relax", "4.7", "50", String.valueOf(days * 50)));
-        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(3), "Día de Sol Familiar", "4.6", "70", String.valueOf(days * 70)));
-        allHotels.add(Arrays.asList(cities.get(3), typeOfHousing.get(3), "Día de Sol Deportivo", "4.8", "80", String.valueOf(days * 80)));
-        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(3), "Día de Sol con Spa", "4.9", "100", String.valueOf(days * 100)));
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(3), "Día de Sol Aventura", "4.5", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(3), "Día de Sol Relax", "4.7", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(3), "Día de Sol Familiar", "4.6", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(3), typeOfHousing.get(3), "Día de Sol Deportivo", "4.8", String.valueOf(price), String.valueOf(days * price)));
+        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(3), "Día de Sol con Spa", "4.9", String.valueOf(price), String.valueOf(days * price)));
 
         return allHotels;
     }
@@ -210,7 +213,7 @@ public class Main {
     }
 
     public static List<List<String>> createRooms(int days) {
-        List<List<String>> hotels = createHotelsValues(days);
+        List<List<String>> hotels = createHotelsValues(100, days);
         List<String> roomTypes = createTypesOfRoom();
         List<List<String>> rooms = new ArrayList<>();
 
@@ -313,6 +316,25 @@ public class Main {
     // endregion
 
     // region rooms available
+    public static List<List<String>> updatePriceHotel(List<List<String>> rooms, List<List<String>> hotels) {
+        for (List<String> hotel : hotels) {
+            String hotelName = hotel.get(2);
+            double minPrice = Double.MAX_VALUE;
+
+            for (List<String> room : rooms) {
+                String roomHotelName = room.get(0);
+                if (roomHotelName.equals(hotelName)) {
+                    double roomPrice = Double.parseDouble(room.get(3));
+                    minPrice = Math.min(minPrice, roomPrice);
+                }
+            }
+
+            hotel.set(4, String.valueOf(minPrice));
+        }
+
+        return hotels;
+    }
+
     public static void getRoom(List<String> room) {
         System.out.println("Tipo de habitación: " + room.get(1));
         System.out.println("Descripción de la habitación: " + room.get(2));
@@ -377,7 +399,7 @@ public class Main {
                                                   int numberOfAdults, int numberOfChildren, int numberOfRooms) {
         long daysBetween = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
-        List<String> hotel = getHotelByCityAndHousing(createHotelsValues((int) daysBetween), city, housingType);
+        List<String> hotel = getHotelByCityAndHousing(createHotelsValues(100,(int) daysBetween), city, housingType);
         System.out.println("Hotel seleccionado: ");
         getHotel(hotel);
         List<String> room = getRoomsForHousing(createRooms((int) daysBetween), hotel);
