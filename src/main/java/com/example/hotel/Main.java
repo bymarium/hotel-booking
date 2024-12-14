@@ -209,100 +209,180 @@ public class Main {
         return types;
     }
 
-    public static List<List<String>> createRooms() {
-        List<String> housings = createHousing();
+    public static List<List<String>> createRooms(int days) {
+        List<List<String>> hotels = createHotelsValues(days);
         List<String> roomTypes = createTypesOfRoom();
         List<List<String>> rooms = new ArrayList<>();
 
         // Hotel rooms
-        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado y Wi-Fi gratuito.", "100"));
-        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado y desayuno incluido.", "150"));
-        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(2), "Habitacion triple con 3 camas dobles, minibar, vista al mar, aire acondicionado y servicio a la habitación 24/7.", "250"));
-        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica y servicio a la habitación 24/7.", "300"));
-        rooms.add(Arrays.asList(housings.get(0), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada y acceso exclusivo al spa.", "500"));
+        rooms.add(Arrays.asList(hotels.get(0).get(2), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado y Wi-Fi gratuito.", "100", "10"));
+        rooms.add(Arrays.asList(hotels.get(0).get(2), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado y desayuno incluido.", "150", "7"));
+        rooms.add(Arrays.asList(hotels.get(0).get(2), roomTypes.get(2), "Habitacion triple con 3 camas dobles, minibar, vista al mar, aire acondicionado y servicio a la habitación 24/7.", "250", "20"));
+        rooms.add(Arrays.asList(hotels.get(0).get(2), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica y servicio a la habitación 24/7.", "300", "10"));
+        rooms.add(Arrays.asList(hotels.get(0).get(2), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada y acceso exclusivo al spa.", "500", "10"));
+
+        rooms.add(Arrays.asList(hotels.get(1).get(2), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado, Wi-Fi gratuito y escritorio de trabajo.", "110", "15"));
+        rooms.add(Arrays.asList(hotels.get(1).get(2), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado, desayuno incluido y acceso a gimnasio.", "170", "6"));
+        rooms.add(Arrays.asList(hotels.get(1).get(2), roomTypes.get(2), "Habitación triple con 3 camas dobles, minibar, vista al mar, aire acondicionado, servicio a la habitación 24/7 y acceso a actividades recreativas.", "270", "18"));
+        rooms.add(Arrays.asList(hotels.get(1).get(2), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica, servicio a la habitación 24/7 y acceso exclusivo a la piscina privada.", "350", "12"));
+        rooms.add(Arrays.asList(hotels.get(1).get(2), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada, acceso exclusivo al spa y servicio personalizado de conserjería.", "600", "8"));
+
+        rooms.add(Arrays.asList(hotels.get(2).get(2), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado, Wi-Fi gratuito y vista a la ciudad.", "110", "12"));
+        rooms.add(Arrays.asList(hotels.get(2).get(2), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado, desayuno incluido y balcón privado.", "160", "8"));
+        rooms.add(Arrays.asList(hotels.get(2).get(2), roomTypes.get(2), "Habitación triple con 3 camas dobles, minibar, vista al mar, aire acondicionado, servicio a la habitación 24/7 y acceso a la piscina exterior.", "270", "15"));
+        rooms.add(Arrays.asList(hotels.get(2).get(2), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica, servicio a la habitación 24/7 y acceso al spa.", "350", "9"));
+        rooms.add(Arrays.asList(hotels.get(2).get(2), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada, acceso exclusivo al spa y servicio de mayordomo.", "600", "6"));
+
+        rooms.add(Arrays.asList(hotels.get(3).get(2), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado, Wi-Fi gratuito y vistas al jardín.", "120", "12"));
+        rooms.add(Arrays.asList(hotels.get(3).get(2), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado, desayuno incluido y balcón privado.", "170", "6"));
+        rooms.add(Arrays.asList(hotels.get(3).get(2), roomTypes.get(2), "Habitación triple con 3 camas dobles, minibar, vista al mar, aire acondicionado, servicio a la habitación 24/7 y acceso al gimnasio.", "270", "18"));
+        rooms.add(Arrays.asList(hotels.get(3).get(2), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica, servicio a la habitación 24/7 y acceso exclusivo al lounge ejecutivo.", "350", "8"));
+        rooms.add(Arrays.asList(hotels.get(3).get(2), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada, acceso exclusivo al spa y servicio de mayordomo las 24 horas.", "550", "5"));
+
+        rooms.add(Arrays.asList(hotels.get(4).get(2), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado, Wi-Fi gratuito y una vista al jardín.", "110", "15"));
+        rooms.add(Arrays.asList(hotels.get(4).get(2), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado, desayuno incluido y terraza privada.", "170", "8"));
+        rooms.add(Arrays.asList(hotels.get(4).get(2), roomTypes.get(2), "Habitación triple con 3 camas dobles, minibar, vista al mar, aire acondicionado, servicio a la habitación 24/7 y acceso a la piscina.", "270", "18"));
+        rooms.add(Arrays.asList(hotels.get(4).get(2), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica, servicio a la habitación 24/7 y acceso exclusivo al gimnasio.", "350", "12"));
+        rooms.add(Arrays.asList(hotels.get(4).get(2), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada, acceso exclusivo al spa y una zona de trabajo privada.", "550", "6"));
 
         // Apartment rooms
-        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(0), "Estudio moderno con cocina equipada, cama individual, baño privado y balcón.", "150"));
-        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(2), "Apartamento de 2 habitaciones, cocina completa, sala de estar y terraza con vista a la ciudad.", "300"));
-        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(3), "Penthouse con 3 dormitorios, jacuzzi, sala de cine, terraza privada y ascensor exclusivo.", "600"));
+        rooms.add(Arrays.asList(hotels.get(5).get(2), roomTypes.get(0), "Estudio moderno con cocina completamente equipada, cama individual, baño privado, balcón con vistas al jardín y Wi-Fi gratuito.", "170", "12"));
+        rooms.add(Arrays.asList(hotels.get(5).get(2), roomTypes.get(2), "Apartamento de 2 habitaciones, cocina completamente equipada, sala de estar espaciosa, terraza con vista panorámica a la ciudad y acceso a la piscina.", "350", "6"));
+        rooms.add(Arrays.asList(hotels.get(5).get(2), roomTypes.get(3), "Penthouse de lujo con 3 dormitorios, jacuzzi privado, sala de cine, terraza privada con barbacoa, ascensor exclusivo y servicio de mayordomo.", "750", "3"));
+
+        rooms.add(Arrays.asList(hotels.get(6).get(2), roomTypes.get(0), "Estudio moderno con cocina equipada, cama individual, baño privado, balcón con vistas al jardín y acceso a gimnasio.", "160", "15"));
+        rooms.add(Arrays.asList(hotels.get(6).get(2), roomTypes.get(2), "Apartamento de 2 habitaciones, cocina completa, sala de estar amplia, terraza con vista a la ciudad y zona de juegos para niños.", "320", "9"));
+        rooms.add(Arrays.asList(hotels.get(6).get(2), roomTypes.get(3), "Penthouse con 3 dormitorios, jacuzzi, sala de cine, terraza privada, ascensor exclusivo, acceso a spa y servicio 24/7.", "700", "4"));
+
+        rooms.add(Arrays.asList(hotels.get(7).get(2), roomTypes.get(0), "Estudio con cocina moderna, cama individual, baño privado, balcón con vistas al jardín, TV inteligente y Wi-Fi.", "180", "14"));
+        rooms.add(Arrays.asList(hotels.get(7).get(2), roomTypes.get(2), "Apartamento de 2 habitaciones con cocina completa, sala de estar, terraza con vista a la ciudad y acceso al club privado de residentes.", "330", "7"));
+        rooms.add(Arrays.asList(hotels.get(7).get(2), roomTypes.get(3), "Penthouse de lujo con 3 dormitorios, jacuzzi privado, cine en casa, terraza privada con vista al mar, ascensor privado y chef personal.", "800", "2"));
+
+        rooms.add(Arrays.asList(hotels.get(8).get(2), roomTypes.get(0), "Estudio de diseño moderno con cocina equipada, cama individual, baño privado, balcón, aire acondicionado y acceso a la piscina exterior.", "160", "10"));
+        rooms.add(Arrays.asList(hotels.get(8).get(2), roomTypes.get(2), "Apartamento de 2 habitaciones, cocina completamente equipada, sala de estar, terraza con vista panorámica y acceso al gimnasio.", "340", "8"));
+        rooms.add(Arrays.asList(hotels.get(8).get(2), roomTypes.get(3), "Penthouse con 3 dormitorios, jacuzzi, cine privado, terraza exclusiva, ascensor privado, y acceso a la zona VIP del hotel.", "720", "5"));
+
+        rooms.add(Arrays.asList(hotels.get(9).get(2), roomTypes.get(0), "Estudio moderno con cocina equipada, cama individual, baño privado, balcón y servicio de limpieza diario.", "165", "13"));
+        rooms.add(Arrays.asList(hotels.get(9).get(2), roomTypes.get(2), "Apartamento de 2 habitaciones con cocina completa, sala de estar, terraza con vista a la ciudad, y servicio de desayuno incluido.", "325", "6"));
+        rooms.add(Arrays.asList(hotels.get(9).get(2), roomTypes.get(3), "Penthouse de lujo con 3 dormitorios, jacuzzi privado, cine en casa, terraza privada, ascensor exclusivo, y acceso al spa y gimnasio.", "750", "4"));
 
         // Country house (Finca) rooms
-        rooms.add(Arrays.asList(housings.get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño compartido, chimenea y vista a las montañas.", "120"));
-        rooms.add(Arrays.asList(housings.get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno con productos locales y acceso a piscina natural.", "250"));
-        rooms.add(Arrays.asList(housings.get(2), roomTypes.get(4), "Suite Deluxe en finca, con jacuzzi al aire libre, terraza con hamacas y vistas al valle.", "450"));
+        rooms.add(Arrays.asList(hotels.get(10).get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño privado, chimenea, terraza con hamacas y vista panorámica a las montañas.", "140", "30"));
+        rooms.add(Arrays.asList(hotels.get(10).get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno con productos locales, acceso a una piscina natural y actividades al aire libre como senderismo.", "270", "6"));
+        rooms.add(Arrays.asList(hotels.get(10).get(2), roomTypes.get(4), "Suite Deluxe en finca con jacuzzi al aire libre, terraza con hamacas, vista al valle y acceso exclusivo a un mirador privado.", "500", "35"));
+
+        rooms.add(Arrays.asList(hotels.get(11).get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño privado, chimenea, terraza con vistas a la naturaleza y acceso a senderos ecológicos.", "130", "28"));
+        rooms.add(Arrays.asList(hotels.get(11).get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno casero con productos locales, acceso a una piscina natural y actividades como pesca y paseos a caballo.", "260", "5"));
+        rooms.add(Arrays.asList(hotels.get(11).get(2), roomTypes.get(4), "Suite Deluxe en finca con jacuzzi privado, terraza con hamacas, vistas al valle y acceso a una zona de bienestar con spa y sauna.", "480", "33"));
+
+        rooms.add(Arrays.asList(hotels.get(12).get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño privado, chimenea, balcón con vista a las montañas y acceso a una zona de picnic al aire libre.", "135", "27"));
+        rooms.add(Arrays.asList(hotels.get(12).get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno orgánico con productos locales y acceso a una piscina natural rodeada de naturaleza.", "280", "7"));
+        rooms.add(Arrays.asList(hotels.get(12).get(2), roomTypes.get(4), "Suite Deluxe en finca con jacuzzi exterior, terraza con hamacas, vistas al valle y acceso a una zona privada para hacer fogatas.", "490", "32"));
+
+        rooms.add(Arrays.asList(hotels.get(13).get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño privado, chimenea, vista a las montañas y acceso a una zona de observación de aves.", "125", "29"));
+        rooms.add(Arrays.asList(hotels.get(13).get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno típico con productos orgánicos y acceso a piscina natural, ideal para relajarse.", "275", "6"));
+        rooms.add(Arrays.asList(hotels.get(13).get(2), roomTypes.get(4), "Suite Deluxe en finca con jacuzzi privado al aire libre, terraza con hamacas, vistas panorámicas al valle y acceso a una sala de yoga y meditación.", "470", "31"));
+
+        rooms.add(Arrays.asList(hotels.get(14).get(2), roomTypes.get(0), "Cabaña rústica con cama sencilla, baño privado, chimenea, balcón y acceso a rutas de senderismo en el bosque.", "125", "25"));
+        rooms.add(Arrays.asList(hotels.get(14).get(2), roomTypes.get(2), "Habitación triple en casa de campo, incluye desayuno con productos orgánicos y acceso a una piscina natural rodeada de jardines y fauna local.", "265", "5"));
+        rooms.add(Arrays.asList(hotels.get(14).get(2), roomTypes.get(4), "Suite Deluxe en finca con jacuzzi al aire libre, terraza con hamacas, vistas al valle y acceso a una zona privada con fogatas para las noches estrelladas.", "460", "34"));
 
         // Day-use (Día de Sol) rooms
-        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas y almuerzo buffet.", "80"));
-        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio incluido.", "120"));
-        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet y masajes.", "300"));
+        rooms.add(Arrays.asList(hotels.get(15).get(2), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas, almuerzo buffet y sesión de yoga al aire libre.", "90", "7"));
+        rooms.add(Arrays.asList(hotels.get(15).get(2), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio, además de un taller de cocina local.", "130", "18"));
+        rooms.add(Arrays.asList(hotels.get(15).get(2), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet, masajes y acceso a un tour privado de la ciudad.", "320", "10"));
+
+        rooms.add(Arrays.asList(hotels.get(16).get(2), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas, almuerzo buffet y actividad de arte al aire libre.", "90", "7"));
+        rooms.add(Arrays.asList(hotels.get(16).get(2), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio, con un taller de danza local incluido.", "130", "18"));
+        rooms.add(Arrays.asList(hotels.get(16).get(2), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet, masajes y un paseo en bote por el río.", "320", "10"));
+
+        rooms.add(Arrays.asList(hotels.get(17).get(2), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas, almuerzo buffet y sesión de meditación al atardecer.", "90", "7"));
+        rooms.add(Arrays.asList(hotels.get(17).get(2), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio, además de una clase de fotografía en la naturaleza.", "130", "18"));
+        rooms.add(Arrays.asList(hotels.get(17).get(2), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet, masajes y acceso a un recorrido privado por una reserva natural.", "320", "10"));
+
+        rooms.add(Arrays.asList(hotels.get(18).get(2), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas, almuerzo buffet y clase de pilates en el jardín.", "90", "7"));
+        rooms.add(Arrays.asList(hotels.get(18).get(2), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio, además de una clase de cocina tradicional.", "130", "18"));
+        rooms.add(Arrays.asList(hotels.get(18).get(2), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet, masajes y una experiencia de cata de vinos.", "320", "10"));
+
+        rooms.add(Arrays.asList(hotels.get(19).get(2), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas, almuerzo buffet y sesión de tai chi al aire libre.", "90", "7"));
+        rooms.add(Arrays.asList(hotels.get(19).get(2), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio, y un taller de arte para niños.", "130", "18"));
+        rooms.add(Arrays.asList(hotels.get(19).get(2), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet, masajes y una noche de música en vivo.", "320", "10"));
 
         return rooms;
-    }
-
-    public static void displayRooms(List<List<String>> rooms) {
-        System.out.println("Listado de habitaciones:");
-        for (List<String> room : rooms) {
-            System.out.println("Alojamiento: " + room.get(0));
-            System.out.println("Tipo de Habitación: " + room.get(1));
-            System.out.println("Descripción: " + room.get(2));
-            System.out.println("Precio: $" + room.get(3));
-            System.out.println("-----------------------------------");
-        }
     }
     // endregion
 
     // region rooms available
-    public static void createRoomsForHousing(int days) {
-        List<List<String>> allHotels = createHotelsValues(days);
-        List<List<String>> rooms = createRooms();
-        List<List<String>> hotelsWithRooms = new ArrayList<>();
+    public static void getRoom(List<String> room) {
+        System.out.println("Tipo de habitación: " + room.get(1));
+        System.out.println("Descripción de la habitación: " + room.get(2));
+        System.out.println("Precio de la habitación: $" + room.get(3));
+        System.out.println("Habitaciones disponibles: " + room.get(4));
+    }
 
-        for (List<String> hotel : allHotels) {
-            String hotelName = hotel.get(2);
-            String city = hotel.get(0);
-            String housingType = hotel.get(1);
+    public static List<String> getRoomsForHousing(List<List<String>> rooms, List<String> hotel) {
+        Scanner sc = new Scanner(System.in);
 
-            for (List<String> room : rooms) {
-                if (room.get(0).equals(housingType)) {
-                    List<String> hotelWithRoom = new ArrayList<>(hotel);
+        System.out.println("Listado de habitaciones disponibles:");
+        int index = 1;
+        String hotelName = hotel.get(2);
 
-                    hotelWithRoom.add(room.get(1));
-                    hotelWithRoom.add(room.get(2));
-                    hotelWithRoom.add(room.get(3));
+        System.out.println("Nombre del hotel: " + hotelName);
 
-                    int availableRooms = (int) (Math.random() * 20) + 1;
-                    hotelWithRoom.add(String.valueOf(availableRooms));
+        for (List<String> room : rooms) {
+            String roomHotelName = room.get(0);
 
-                    hotelsWithRooms.add(hotelWithRoom);
-                }
+            if (hotelName.equals(roomHotelName)) {
+                System.out.println(index + ":");
+                getRoom(room);
+                System.out.println("-----------------------------------");
+                index++;
             }
         }
+        if (index == 1) {
+            System.out.println("No se encontraron habitaciones que coincidan con los criterios.");
+        }
 
-        System.out.println("Listado de hoteles con habitaciones disponibles:");
-        for (List<String> hotelWithRoom : hotelsWithRooms) {
-            System.out.println("-----------------------------------");
-            System.out.println("Ciudad: " + hotelWithRoom.get(0));
-            System.out.println("Tipo de alojamiento: " + hotelWithRoom.get(1));
-            System.out.println("Nombre del hotel: " + hotelWithRoom.get(2));
-            System.out.println("Calificación: " + hotelWithRoom.get(3));
-            System.out.println("Precio por día: $" + hotelWithRoom.get(4));
-            System.out.println("Precio total por " + days + " días: $" + hotelWithRoom.get(5));
-            System.out.println("Tipo de habitación: " + hotelWithRoom.get(6));
-            System.out.println("Descripción de la habitación: " + hotelWithRoom.get(7));
-            System.out.println("Precio de la habitación: $" + hotelWithRoom.get(8));
-            System.out.println("Habitaciones disponibles: " + hotelWithRoom.get(9));
-            System.out.println("-----------------------------------");
+        int selection = -1;
+        while (true) {
+            try {
+                System.out.print("\nEscribe el número de la habitación que deseas seleccionar (1-" + (index - 1) + "): ");
+                selection = sc.nextInt();
+
+                if (selection > 0 && selection < index) {
+                    int currentIndex = 1;
+                    for (List<String> room : rooms) {
+                        String roomHotelName = room.get(0);
+
+                        if (hotelName.equals(roomHotelName)) {
+                            if (currentIndex == selection) {
+                                return room;
+                            }
+                            currentIndex++;
+                        }
+                    }
+                } else {
+                    System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada no válida. Inténtalo de nuevo.");
+                sc.next();
+            }
         }
     }
     // endregion
 
     // region desired accommodation
-    public static void createDesiredAccommodation(String city, String housingType, Date startDate, Date endDate, int numberOfAdults, int numberOfChildren, int numberOfRooms) {
+    public static void createDesiredAccommodation(String city, String housingType, Date startDate, Date endDate,
+                                                  int numberOfAdults, int numberOfChildren, int numberOfRooms) {
         long daysBetween = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 
         List<String> hotel = getHotelByCityAndHousing(createHotelsValues((int) daysBetween), city, housingType);
         System.out.println("Hotel seleccionado: ");
         getHotel(hotel);
+        List<String> room = getRoomsForHousing(createRooms((int) daysBetween), hotel);
+        System.out.println("Habitación seleccionada: ");
+        getRoom(room);
     }
     // endregion
 }
