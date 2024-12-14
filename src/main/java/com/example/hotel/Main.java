@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
+        createRoomsForHousing(5);
     }
 
     // region city
@@ -170,6 +170,7 @@ public class Main {
         types.add("Habitacion Triple");
         types.add("Habitacion Suite");
         types.add("Habitacion Suite Deluxe");
+        types.add("Actividades de dia de sol");
 
         return types;
     }
@@ -182,6 +183,7 @@ public class Main {
         // Hotel rooms
         rooms.add(Arrays.asList(housings.get(0), roomTypes.get(0), "Habitación sencilla con 1 cama, aire acondicionado, TV, baño privado y Wi-Fi gratuito.", "100"));
         rooms.add(Arrays.asList(housings.get(0), roomTypes.get(1), "Habitación doble con 2 camas dobles, minibar, vista al mar, aire acondicionado y desayuno incluido.", "150"));
+        rooms.add(Arrays.asList(housings.get(1), roomTypes.get(2), "Habitacion triple con 3 camas dobles, minibar, vista al mar, aire acondicionado y servicio a la habitación 24/7.", "250"));
         rooms.add(Arrays.asList(housings.get(0), roomTypes.get(3), "Suite con cama king size, sala de estar, bañera de hidromasaje, vista panorámica y servicio a la habitación 24/7.", "300"));
         rooms.add(Arrays.asList(housings.get(0), roomTypes.get(4), "Suite Deluxe con cama king size, terraza privada, piscina climatizada y acceso exclusivo al spa.", "500"));
 
@@ -196,9 +198,9 @@ public class Main {
         rooms.add(Arrays.asList(housings.get(2), roomTypes.get(4), "Suite Deluxe en finca, con jacuzzi al aire libre, terraza con hamacas y vistas al valle.", "450"));
 
         // Day-use (Día de Sol) rooms
-        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(1), "Habitación doble para uso diurno, incluye acceso a piscina, almuerzo buffet y bebidas.", "80"));
-        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(2), "Habitación triple con acceso a zonas recreativas, spa y transporte incluido.", "120"));
-        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(4), "Suite Deluxe para uso diurno, incluye piscina privada, almuerzo gourmet y servicio de masajes.", "300"));
+        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(5), "Día de sol con acceso a piscina, zonas recreativas y almuerzo buffet.", "80"));
+        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(5), "Día de sol con actividades deportivas, acceso a spa, transporte y refrigerio incluido.", "120"));
+        rooms.add(Arrays.asList(housings.get(3), roomTypes.get(5), "Día de sol premium con piscina privada, actividades exclusivas, almuerzo gourmet y masajes.", "300"));
 
         return rooms;
     }
@@ -215,5 +217,48 @@ public class Main {
     }
     // endregion
 
+    // region rooms available
+    public static void createRoomsForHousing(int days) {
+        List<List<String>> allHotels = createHotelsValues(days);
+        List<List<String>> rooms = createRooms();
+        List<List<String>> hotelsWithRooms = new ArrayList<>();
 
+        for (List<String> hotel : allHotels) {
+            String hotelName = hotel.get(2);
+            String city = hotel.get(0);
+            String housingType = hotel.get(1);
+
+            for (List<String> room : rooms) {
+                if (room.get(0).equals(housingType)) {
+                    List<String> hotelWithRoom = new ArrayList<>(hotel);
+
+                    hotelWithRoom.add(room.get(1));
+                    hotelWithRoom.add(room.get(2));
+                    hotelWithRoom.add(room.get(3));
+
+                    int availableRooms = (int) (Math.random() * 20) + 1;
+                    hotelWithRoom.add(String.valueOf(availableRooms));
+
+                    hotelsWithRooms.add(hotelWithRoom);
+                }
+            }
+        }
+
+        System.out.println("Listado de hoteles con habitaciones disponibles:");
+        for (List<String> hotelWithRoom : hotelsWithRooms) {
+            System.out.println("-----------------------------------");
+            System.out.println("Ciudad: " + hotelWithRoom.get(0));
+            System.out.println("Tipo de alojamiento: " + hotelWithRoom.get(1));
+            System.out.println("Nombre del hotel: " + hotelWithRoom.get(2));
+            System.out.println("Calificación: " + hotelWithRoom.get(3));
+            System.out.println("Precio por día: $" + hotelWithRoom.get(4));
+            System.out.println("Precio total por " + days + " días: $" + hotelWithRoom.get(5));
+            System.out.println("Tipo de habitación: " + hotelWithRoom.get(6));
+            System.out.println("Descripción de la habitación: " + hotelWithRoom.get(7));
+            System.out.println("Precio de la habitación: $" + hotelWithRoom.get(8));
+            System.out.println("Habitaciones disponibles: " + hotelWithRoom.get(9));
+            System.out.println("-----------------------------------");
+        }
+    }
+    // endregion
 }
