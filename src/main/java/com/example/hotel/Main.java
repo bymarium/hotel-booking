@@ -1,5 +1,6 @@
 package com.example.hotel;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -9,7 +10,9 @@ public class Main {
         LocalDate startDate = LocalDate.of(2025, 2, 23);
         LocalDate endDate = LocalDate.of(2025, 2, 28);
 
-        createDesiredAccommodation("Bogotá", "Hotel", startDate, endDate, 2, 0, 2);
+        List< String > hotel = createDesiredAccommodation("Bogotá", "Hotel", startDate, endDate, 2, 0, 2);
+
+        confirmRooms(hotel.get(2), startDate, endDate, 2, 0, 2);
     }
 
     // region city
@@ -345,12 +348,11 @@ public class Main {
         System.out.println("Habitaciones disponibles: " + room.get(4));
     }
 
-    public static List<String> getRoomsForHousing(List<List<String>> rooms, List<String> hotel) {
+    public static List<String> getRoomsForHousing(List<List<String>> rooms, String hotelName) {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Listado de habitaciones disponibles:");
         int index = 1;
-        String hotelName = hotel.get(2);
 
         System.out.println("Nombre del hotel: " + hotelName);
 
@@ -398,12 +400,12 @@ public class Main {
     // endregion
 
     // region desired accommodation
-    public static void createDesiredAccommodation(String city, String housingType, LocalDate startDate, LocalDate endDate,
-                                                  int numberOfAdults, int numberOfChildren, int numberOfRooms) {
+    public static List<String> createDesiredAccommodation(String city, String housingType, LocalDate startDate, LocalDate endDate,
+                                                          int numberOfAdults, int numberOfChildren, int numberOfRooms) {
         long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
 
         List<List<String>> rooms = createRooms((int) daysBetween);
-        List<List<String>> hotels = updatePriceHotel(rooms, createHotelsValues(100,(int) daysBetween), (int)daysBetween);
+        List<List<String>> hotels = updatePriceHotel(rooms, createHotelsValues(100, (int) daysBetween), (int) daysBetween);
 
         List<String> hotel = getHotelByCityAndHousing(hotels, city, housingType);
         System.out.println("\nHotel seleccionado: ");
@@ -447,6 +449,76 @@ public class Main {
         }
 
         System.out.println("Precio total del hotel después de ajustes: $" + totalPrice);
+        hotel.set(5, String.valueOf(totalPrice));
+
+        return hotel;
     }
+    // endregion
+
+    // region confirm rooms
+    public static void confirmRooms(String hotelName, LocalDate startDate, LocalDate endDate, int numberOfAdults, int numberOfChildren, int numberOfRooms) {
+        Scanner sc = new Scanner(System.in);
+
+        long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
+        List<List<String>> rooms = createRooms((int) daysBetween);
+
+        System.out.println("\n*** Confirmación de habitaciones para el hotel: " + hotelName + " ***\n");
+
+        List<List<String>> selectedRooms = new ArrayList<>();
+        int remainingRooms = numberOfRooms;
+
+        while (remainingRooms > 0) {
+            System.out.println("\nHabitaciones restantes por seleccionar: " + remainingRooms);
+
+            List<String> selectedRoom = getRoomsForHousing(rooms, hotelName);
+
+            int quantity = 0;
+            while (true) {
+                System.out.print("\n¿Cuántas habitaciones de este tipo deseas? ");
+                try {
+                    quantity = sc.nextInt();
+                    if (quantity > remainingRooms) {
+                        System.out.println("La cantidad ingresada supera el número de habitaciones restantes (" + remainingRooms + "). Por favor, ingresa una cantidad válida.");
+                    } else if (quantity <= 0) {
+                        System.out.println("Por favor, ingresa un número mayor a 0.");
+                    } else {
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Entrada no válida. Por favor, ingresa un número entero.");
+                    sc.next();
+                }
+            }
+
+            for (int i = 0; i < quantity; i++) {
+                selectedRooms.add(selectedRoom);
+            }
+
+            remainingRooms -= quantity;
+            System.out.println("\nHas seleccionado " + quantity + " habitación(es) correctamente.");
+
+            if (remainingRooms > 0) {
+                System.out.print("¿Deseas seleccionar más habitaciones? (S/N): ");
+                String response = sc.next();
+                if (!response.equalsIgnoreCase("S")) {
+                    break;
+                }
+            }
+        }
+
+        System.out.println("\n*** Resumen de habitaciones seleccionadas ***\n");
+        for (int i = 0; i < selectedRooms.size(); i++) {
+            System.out.println("Habitación " + (i + 1) + ":");
+            getRoom(selectedRooms.get(i));
+            System.out.println("-----------------------------------");
+        }
+
+        if (remainingRooms > 0) {
+            System.out.println("\nNo seleccionaste todas las habitaciones disponibles. ¡Asegúrate de confirmar tus opciones!");
+        }
+
+        System.out.println("\nGracias por confirmar tus habitaciones. ¡Que tengas una estancia agradable!");
+    }
+
     // endregion
 }
