@@ -108,20 +108,39 @@ public class Main {
     }
 
     public static List<List<String>> createHotelsValues(int days) {
-        List<String> hotelValue1 = Arrays.asList("Hotel 1", "4.5", "100", String.valueOf(days * 100));
-        List<String> hotelValue2 = Arrays.asList("Hotel 2", "4.0", "150", String.valueOf(days * 150));
-        List<String> hotelValue3 = Arrays.asList("Hotel 3", "4.0", "200", String.valueOf(days * 200));
-        List<String> hotelValue4 = Arrays.asList("Hotel 4", "4.0", "250", String.valueOf(days * 250));
-        List<String> hotelValue5 = Arrays.asList("Hotel 5", "4.0", "300", String.valueOf(days * 300));
+        List<String> cities = createCities();
+        List<String> typeOfHousing = createHousing();
+        List<List<String>> allHotels = new ArrayList<>();
 
-        List<List<String>> hotels = new ArrayList<>();
-        hotels.add(hotelValue1);
-        hotels.add(hotelValue2);
-        hotels.add(hotelValue3);
-        hotels.add(hotelValue4);
-        hotels.add(hotelValue5);
+        // Hoteles
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(0), "Marriott Hotel", "4.5", "150", String.valueOf(days * 150)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(0), "Hilton Garden Inn", "4.4", "120", String.valueOf(days * 120)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(0), "Ritz-Carlton", "5.0", "500", String.valueOf(days * 500)));
+        allHotels.add(Arrays.asList(cities.get(3), typeOfHousing.get(0), "Holiday Inn", "4.2", "110", String.valueOf(days * 110)));
+        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(0), "Sheraton", "4.3", "140", String.valueOf(days * 140)));
 
-        return hotels;
+        // Apartamentos
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(1), "Apartamento Luxury", "4.7", "80", String.valueOf(days * 80)));
+        allHotels.add(Arrays.asList(cities.get(1), typeOfHousing.get(1), "Apartamento Vista Mar", "4.6", "90", String.valueOf(days * 90)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(1), "Apartamento Moderno", "4.5", "75", String.valueOf(days * 75)));
+        allHotels.add(Arrays.asList(cities.get(5), typeOfHousing.get(1), "Apartamento Familiar", "4.8", "100", String.valueOf(days * 100)));
+        allHotels.add(Arrays.asList(cities.get(7), typeOfHousing.get(1), "Apartamento en el Centro", "4.4", "85", String.valueOf(days * 85)));
+
+        // Fincas
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(2), "Finca El Paraíso", "4.9", "200", String.valueOf(days * 200)));
+        allHotels.add(Arrays.asList(cities.get(1), typeOfHousing.get(2), "Finca La Esperanza", "4.6", "250", String.valueOf(days * 250)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(2), "Finca El Refugio", "4.8", "220", String.valueOf(days * 220)));
+        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(2), "Finca Santa Isabel", "4.7", "180", String.valueOf(days * 180)));
+        allHotels.add(Arrays.asList(cities.get(6), typeOfHousing.get(2), "Finca Las Palmas", "4.5", "170", String.valueOf(days * 170)));
+
+        // Día de Sol
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(3), "Día de Sol Aventura", "4.5", "60", String.valueOf(days * 60)));
+        allHotels.add(Arrays.asList(cities.get(0), typeOfHousing.get(3), "Día de Sol Relax", "4.7", "50", String.valueOf(days * 50)));
+        allHotels.add(Arrays.asList(cities.get(2), typeOfHousing.get(3), "Día de Sol Familiar", "4.6", "70", String.valueOf(days * 70)));
+        allHotels.add(Arrays.asList(cities.get(3), typeOfHousing.get(3), "Día de Sol Deportivo", "4.8", "80", String.valueOf(days * 80)));
+        allHotels.add(Arrays.asList(cities.get(4), typeOfHousing.get(3), "Día de Sol con Spa", "4.9", "100", String.valueOf(days * 100)));
+
+        return allHotels;
     }
 
 
@@ -218,6 +237,7 @@ public class Main {
             System.out.println("-----------------------------------");
         }
     }
-
     // endregion
+
+
 }
