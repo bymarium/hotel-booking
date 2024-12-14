@@ -52,4 +52,45 @@ public class Main {
         }
     }
     // endregion
+
+    // region type of housing
+    public static List<String> createHousing() {
+        List<String> types = new ArrayList<>();
+        types.add("Hotel");
+        types.add("Apartamento");
+        types.add("Finca");
+        types.add("Dia de Sol");
+
+        return types;
+    }
+
+    public static String getHousing() {
+        List<String> types = createHousing();
+
+        System.out.println("Tipos de alojamiento:");
+        for (int i = 0; i < types.size(); i++) {
+            System.out.println((i + 1) + ". " + types.get(i));
+        }
+
+        Scanner sc = new Scanner(System.in);
+        int type = -1;
+
+        while (true) {
+            try {
+                System.out.print("\nEscribe el número del alojamiento que deseas seleccionar (1-" + types.size() + "): ");
+                type = sc.nextInt();
+
+                if (type > 0 && type <= types.size()) {
+                    return types.get(type - 1);
+                } else {
+                    System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada no válida. Inténtalo de nuevo.");
+                sc.next();
+            }
+
+        }
+    }
+    // endregion
 }
