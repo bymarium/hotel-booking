@@ -1,12 +1,14 @@
 package com.example.hotel;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
+  private static List<List<String>> rooms = null;
+  private static List<List<String>> hotels = null;
+
   public static void main(String[] args) {
     menu();
   }
@@ -396,14 +398,13 @@ public class Main {
   // endregion
 
   // region desired accommodation
-  public static List<String> createDesiredAccommodation(String city, String housingType, LocalDate startDate, LocalDate endDate,
+  public static List<String> createDesiredAccommodation(List<List<String>> rooms, List<List<String>> hotels, String city, String housingType, LocalDate startDate, LocalDate endDate,
                                                         int numberOfAdults, int numberOfChildren, int numberOfRooms) {
     long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
 
-    List<List<String>> rooms = createRooms((int) daysBetween);
-    List<List<String>> hotels = updatePriceHotel(rooms, createHotelsValues(100, (int) daysBetween), (int) daysBetween);
+    List<List<String>> hotelsNow = updatePriceHotel(rooms, hotels, (int)daysBetween);
 
-    List<String> hotel = getHotelByCityAndHousing(hotels, city, housingType);
+    List<String> hotel = getHotelByCityAndHousing(hotelsNow, city, housingType);
     System.out.println("\nHotel seleccionado: ");
     getHotel(hotel);
 
@@ -462,6 +463,7 @@ public class Main {
     for (List<String> room : rooms) {
       price += Double.parseDouble(room.get(2)) * Integer.parseInt(room.get(4));
     }
+    hotel.set(4, String.valueOf(price));
     hotel.set(5, String.valueOf(price));
 
     System.out.println("\n***Precio total con precio de habitaciones***");
@@ -472,11 +474,10 @@ public class Main {
   // endregion
 
   // region confirm rooms
-  public static List<List<String>> confirmRooms(String hotelName, LocalDate startDate, LocalDate endDate, int numberOfAdults, int numberOfChildren, int numberOfRooms) {
+  public static List<List<String>> confirmRooms(List<List<String>> rooms, String hotelName, LocalDate startDate, LocalDate endDate, int numberOfAdults, int numberOfChildren, int numberOfRooms) {
     Scanner sc = new Scanner(System.in);
 
     long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
-    List<List<String>> rooms = createRooms((int) daysBetween);
 
     System.out.println("\n*** Confirmación de habitaciones para el hotel: " + hotelName + " ***\n");
 
@@ -488,7 +489,6 @@ public class Main {
       System.out.println("\nHabitaciones restantes por seleccionar: " + remainingRooms);
 
       List<String> selectedRoom = getRoomsForHousing(rooms, hotelName);
-      int roomIndex = rooms.indexOf(selectedRoom);
 
       int quantity;
       int availableRooms;
@@ -692,8 +692,16 @@ public class Main {
         System.out.println("\nIngrese el número de habitaciones: ");
         int numberOfRooms = sc.nextInt();
 
-        List<String> hotel = createDesiredAccommodation(city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
-        List<List<String>> selectedRooms = confirmRooms(hotel.get(2), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+        long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
+        if (rooms == null) {
+          rooms = createRooms((int) daysBetween);
+        }
+        if (hotels == null) {
+          hotels = createHotelsValues(100, (int) daysBetween);
+        }
+
+        List<String> hotel = createDesiredAccommodation(rooms, hotels, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+        List<List<String>> selectedRooms = confirmRooms(rooms, hotel.get(2), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
 
         calculatePriceWithRooms(hotel, selectedRooms, startDate, endDate, numberOfRooms);
 
