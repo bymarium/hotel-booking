@@ -1,7 +1,5 @@
 package com.example.hotel;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -407,6 +405,12 @@ public class Main {
     System.out.println("\nHotel seleccionado: ");
     getHotel(hotel);
 
+    calculatePrice(hotel, startDate, endDate, numberOfRooms);
+
+    return hotel;
+  }
+
+  public static void calculatePrice(List<String> hotel, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
     double price = Double.parseDouble(hotel.get(5));
     double totalPrice = price * numberOfRooms;
     System.out.println("\nPrecio base con " + numberOfRooms + " habitaciones: $" + totalPrice);
@@ -422,8 +426,8 @@ public class Main {
     endCalendar.setTime(java.sql.Date.valueOf(endDate));
     int lastDayOfEndMonth = endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-    double percentageApplied = 0;
-    double adjustmentAmount = 0;
+    double percentageApplied;
+    double adjustmentAmount;
 
     if ((startDay >= lastDayOfStartMonth - 4) && (endDay >= lastDayOfEndMonth - 4)) {
       percentageApplied = 0.15;
@@ -446,9 +450,8 @@ public class Main {
 
     System.out.println("Precio total del hotel después de ajustes: $" + totalPrice);
     hotel.set(5, String.valueOf(totalPrice));
-
-    return hotel;
   }
+
   // endregion
 
   // region confirm rooms
@@ -461,23 +464,51 @@ public class Main {
     System.out.println("\n*** Confirmación de habitaciones para el hotel: " + hotelName + " ***\n");
 
     List<List<String>> selectedRooms = new ArrayList<>();
+    List<List<String>> summary = new ArrayList<>();
     int remainingRooms = numberOfRooms;
 
     while (remainingRooms > 0) {
       System.out.println("\nHabitaciones restantes por seleccionar: " + remainingRooms);
 
       List<String> selectedRoom = getRoomsForHousing(rooms, hotelName);
+      int roomIndex = rooms.indexOf(selectedRoom);
 
-      int quantity = 0;
+      int quantity;
+      int availableRooms;
       while (true) {
         System.out.print("\n¿Cuántas habitaciones de este tipo deseas? ");
         try {
           quantity = sc.nextInt();
+          availableRooms = Integer.parseInt(selectedRoom.get(4));
+
           if (quantity > remainingRooms) {
             System.out.println("La cantidad ingresada supera el número de habitaciones restantes (" + remainingRooms + "). Por favor, ingresa una cantidad válida.");
+          } else if (quantity > availableRooms) {
+            System.out.println("La cantidad ingresada supera la disponibilidad de este tipo de habitación (" + availableRooms + ").");
           } else if (quantity <= 0) {
             System.out.println("Por favor, ingresa un número mayor a 0.");
           } else {
+            availableRooms -= quantity;
+            selectedRoom.set(4, String.valueOf(availableRooms));
+
+            boolean foundInSummary = false;
+            for (List<String> summaryRoom : summary) {
+              if (summaryRoom.get(0).equals(selectedRoom.get(0))) {
+                int currentQuantity = Integer.parseInt(summaryRoom.get(4));
+                summaryRoom.set(4, String.valueOf(currentQuantity + quantity));
+                foundInSummary = true;
+                break;
+              }
+            }
+            if (!foundInSummary) {
+              List<String> summaryRoom = new ArrayList<>();
+              summaryRoom.add(selectedRoom.get(1));
+              summaryRoom.add(selectedRoom.get(2));
+              summaryRoom.add(selectedRoom.get(3));
+              summaryRoom.add(selectedRoom.get(4));
+              summaryRoom.add(String.valueOf(quantity));
+              summary.add(summaryRoom);
+            }
             break;
           }
         } catch (Exception e) {
@@ -487,7 +518,7 @@ public class Main {
       }
 
       for (int i = 0; i < quantity; i++) {
-        selectedRooms.add(selectedRoom);
+        selectedRooms.add(new ArrayList<>(selectedRoom));
       }
 
       remainingRooms -= quantity;
@@ -503,9 +534,13 @@ public class Main {
     }
 
     System.out.println("\n*** Resumen de habitaciones seleccionadas ***\n");
-    for (int i = 0; i < selectedRooms.size(); i++) {
-      System.out.println("Habitación " + (i + 1) + ":");
-      getRoom(selectedRooms.get(i));
+
+    for (List<String> room : summary) {
+      System.out.println("Tipo de habitación: " + room.get(0));
+      System.out.println("Descripción: " + room.get(1));
+      System.out.println("Precio por noche: $" + room.get(2));
+      System.out.println("Disponibilidad restante: " + room.get(3));
+      System.out.println("Cantidad seleccionada: " + room.get(4));
       System.out.println("-----------------------------------");
     }
 
@@ -515,7 +550,7 @@ public class Main {
 
     System.out.println("\nGracias por confirmar tus habitaciones. ¡Que tengas una estancia agradable!");
 
-    return selectedRooms;
+    return summary;
   }
 
   // endregion
