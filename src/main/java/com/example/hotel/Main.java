@@ -405,14 +405,16 @@ public class Main {
     System.out.println("\nHotel seleccionado: ");
     getHotel(hotel);
 
+    hotel.set(5, String.valueOf((double) numberOfRooms * Double.parseDouble(hotel.get(4))));
     calculatePrice(hotel, startDate, endDate, numberOfRooms);
 
     return hotel;
   }
 
   public static void calculatePrice(List<String> hotel, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
-    double price = Double.parseDouble(hotel.get(5));
-    double totalPrice = price * numberOfRooms;
+    long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
+    double totalPrice = Double.parseDouble(hotel.get(5)) * daysBetween;
+
     System.out.println("\nPrecio base con " + numberOfRooms + " habitaciones: $" + totalPrice);
 
     int startDay = startDate.getDayOfMonth();
@@ -450,6 +452,19 @@ public class Main {
 
     System.out.println("Precio total del hotel después de ajustes: $" + totalPrice);
     hotel.set(5, String.valueOf(totalPrice));
+  }
+
+  public static void calculatePriceWithRooms(List<String> hotel, List<List<String>> rooms, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
+    double price = 0;
+
+    for (List<String> room : rooms) {
+      price += Double.parseDouble(room.get(2)) * Integer.parseInt(room.get(4));
+    }
+    hotel.set(5, String.valueOf(price));
+
+    System.out.println("\n***Precio total con precio de habitaciones***");
+
+    calculatePrice(hotel, startDate, endDate, numberOfRooms);
   }
 
   // endregion
@@ -557,7 +572,7 @@ public class Main {
 
   // region menu
   public static int showOptions() {
-    System.out.println("Bienvenido a la aplicación de reserva de alojamientos.");
+    System.out.println("\nBienvenido a la aplicación de reserva de alojamientos.");
     System.out.println("¿Qué deseas hacer?");
     System.out.println("(1) Hacer reserva");
     System.out.println("(2) Modificar reserva");
@@ -591,6 +606,7 @@ public class Main {
         List<String> hotel = createDesiredAccommodation(city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
         List<List<String>> selectedRooms = confirmRooms(hotel.get(2), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
 
+        calculatePriceWithRooms(hotel, selectedRooms, startDate, endDate, numberOfRooms);
 
         menu();
         break;
