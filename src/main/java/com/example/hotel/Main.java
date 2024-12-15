@@ -543,9 +543,9 @@ public class Main {
         String city = getCity();
         String housing = getHousing();
         System.out.println("\nIngrese la fecha de inicio de la reserva (dd/mm/aaaa): ");
-        LocalDate startDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate startDate = validateDate();
         System.out.println("\nIngrese la fecha de fin de la reserva (dd/mm/aaaa): ");
-        LocalDate endDate = LocalDate.parse(sc.next(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate endDate = validateDateEnd(startDate);
         System.out.println("\nIngrese el número de adultos: ");
         int numberOfAdults = sc.nextInt();
         System.out.println("\nIngrese el número de niños: ");
@@ -575,5 +575,54 @@ public class Main {
         menu();
     }
   }
+  // endregion
+
+  // region validation
+  public static LocalDate validateDate() {
+    LocalDate date = null;
+    Scanner sc = new Scanner(System.in);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    while (true) {
+      String input = sc.next();
+
+      try {
+        date = LocalDate.parse(input, formatter);
+
+        if (date.isBefore(LocalDate.now())) {
+          System.out.println("La fecha ingresada no es posterior a la fecha actual. Intenta de nuevo.");
+        } else {
+          break;
+        }
+      } catch (Exception e) {
+        System.out.println("Entrada no válida. Asegúrate de usar el formato dd/MM/aaaa. Intenta de nuevo.");
+      }
+    }
+    return date;
+  }
+
+  public static LocalDate validateDateEnd(LocalDate startDate) {
+    LocalDate endDate = null;
+    Scanner sc = new Scanner(System.in);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    while (true) {
+      String input = sc.next();
+
+      try {
+        endDate = LocalDate.parse(input, formatter);
+
+        if (endDate.isBefore(startDate)) {
+          System.out.println("La fecha de fin no puede ser menor a la fecha de inicio. Intenta de nuevo.");
+        } else {
+          break;
+        }
+      } catch (Exception e) {
+        System.out.println("Entrada no válida. Asegúrate de usar el formato dd/MM/aaaa. Intenta de nuevo.");
+      }
+    }
+    return endDate;
+  }
+
+  // endregion
 }
-// endregion
