@@ -1,6 +1,8 @@
 package com.example.hotel;
 
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -570,9 +572,94 @@ public class Main {
 
   // endregion
 
+  // region revervation
+  public static List<String> createReservation(List<String> hotel, List<List<String>> rooms, int numberOfRooms, int numberOfAdults, int numberOfChildren, String nombre, String lastName, String email, String nationality, String phone, LocalTime arrivalTime) {
+    List<String> reservation = new ArrayList<>();
+
+    reservation.add("Nombre: " + nombre + " " + lastName);
+    reservation.add("Email: " + email);
+    reservation.add("Nacionalidad: " + nationality);
+    reservation.add("Teléfono: " + phone);
+
+    reservation.add("Ciudad: " + hotel.get(0));
+    reservation.add("Tipo de alojamiento: " + hotel.get(1));
+    reservation.add("Nombre: " + hotel.get(2));
+    reservation.add("Calificación: " + hotel.get(3));
+    reservation.add("Precio por noche: " + hotel.get(4));
+    reservation.add("Precio por estadía: " + hotel.get(5));
+
+    reservation.add("Número de habitaciones: " + numberOfRooms);
+    reservation.add("Número de adultos: " + numberOfAdults);
+    reservation.add("Número de niños: " + numberOfChildren);
+
+    reservation.add("Hora de llegada: " + arrivalTime.toString());
+
+    for (List<String> room : rooms) {
+      reservation.add("Tipo de habitación: " + room.get(0));
+      reservation.add("Descripción: " + room.get(1));
+      reservation.add("Precio por noche: " + room.get(2));
+      reservation.add("Cantidad: " + room.get(4));
+    }
+
+    return reservation;
+  }
+
+  public static void getReservation(List<String> reservation) {
+    System.out.println("******************************");
+    System.out.println("¡RESERVA REALIZADA CON ÉXITO!");
+    System.out.println("******************************");
+
+    System.out.println("\n----------------------------");
+    System.out.println("Información del cliente:");
+    System.out.println("----------------------------");
+    System.out.println(reservation.get(0));
+    System.out.println(reservation.get(1));
+    System.out.println(reservation.get(2));
+    System.out.println(reservation.get(3));
+
+    System.out.println("\n----------------------------");
+    System.out.println("Información del hotel:");
+    System.out.println("----------------------------");
+    System.out.println(reservation.get(4));
+    System.out.println(reservation.get(5));
+    System.out.println(reservation.get(6));
+    System.out.println(reservation.get(7));
+    System.out.println(reservation.get(8));
+    System.out.println(reservation.get(9));
+
+    System.out.println("\n----------------------------");
+    System.out.println("Detalles de la reserva:");
+    System.out.println("----------------------------");
+    System.out.println(reservation.get(10));
+    System.out.println(reservation.get(11));
+    System.out.println(reservation.get(12));
+    System.out.println(reservation.get(13));
+
+    System.out.println("\n----------------------------");
+    System.out.println("Habitaciones reservadas:");
+    System.out.println("----------------------------");
+    int roomStartIndex = 14;
+    for (int i = roomStartIndex; i < reservation.size(); i += 4) {
+      System.out.println(reservation.get(i));
+      System.out.println(reservation.get(i + 1));
+      System.out.println(reservation.get(i + 2));
+      System.out.println(reservation.get(i + 3));
+      System.out.println("----------------------------");
+    }
+
+    System.out.println("******************************");
+    System.out.println("¡GRACIAS POR ELEGIRNOS!");
+    System.out.println("******************************");
+  }
+
+
+  // endregion
+
   // region menu
   public static int showOptions() {
-    System.out.println("\nBienvenido a la aplicación de reserva de alojamientos.");
+    System.out.println("\n**********************************************************");
+    System.out.println("   BIENVENIDO A LA APLICACIÓN DE RESERVA DE ALOJAMIENTOS.");
+    System.out.println("***********************************************************");
     System.out.println("¿Qué deseas hacer?");
     System.out.println("(1) Hacer reserva");
     System.out.println("(2) Modificar reserva");
@@ -588,7 +675,9 @@ public class Main {
 
     switch (option) {
       case 1:
-        System.out.println("Reserva de alojamiento");
+        System.out.println("\n******************************");
+        System.out.println("     RESERVA DE ALOJAMIENTO");
+        System.out.println("******************************");
 
         String city = getCity();
         String housing = getHousing();
@@ -608,17 +697,40 @@ public class Main {
 
         calculatePriceWithRooms(hotel, selectedRooms, startDate, endDate, numberOfRooms);
 
+        System.out.println("\n******************************");
+        System.out.println(" DATOS DE LA PERSONA TITULAR");
+        System.out.println("******************************");
+
+        System.out.println("\nIngrese el nombre: ");
+        String name = sc.next();
+        System.out.println("\nIngrese el apellido: ");
+        String lastName = sc.next();
+        System.out.println("\nIngrese el email: ");
+        String email = sc.next();
+        System.out.println("\nIngrese la nacionalidad: ");
+        String nationality = sc.next();
+        System.out.println("\nIngrese el número de teléfono: ");
+        String phone = sc.next();
+        System.out.println("\nIngrese la hora de llegada (HH:mm): ");
+        LocalTime arrivalDate = validateTime();
+
+        List<String> revervation = createReservation(hotel, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalDate);
+
+        getReservation(revervation);
         menu();
         break;
       case 2:
-        System.out.println("Modificar reserva");
+        System.out.println("\n******************************");
+        System.out.println("       MODIFICAR RESERVA");
+        System.out.println("******************************");
 
         menu();
         break;
       case 3:
-        System.out.println("Cerrar sesión");
+        System.out.println("\n******************************");
+        System.out.println("        SESION CERRADA.");
+        System.out.println("******************************");
 
-        menu();
         break;
       default:
         System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
@@ -675,5 +787,27 @@ public class Main {
     return endDate;
   }
 
+  public static LocalTime validateTime() {
+    LocalTime time = null;
+    Scanner sc = new Scanner(System.in);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+    while (true) {
+      String input = sc.next();
+
+      try {
+        time = LocalTime.parse(input, formatter);
+
+        if (time.isBefore(LocalTime.MIDNIGHT) || time.isAfter(LocalTime.of(23, 59))) {
+          System.out.println("La hora ingresada no es válida. Debe estar en el rango de 00:00 a 23:59. Intenta de nuevo.");
+        } else {
+          break;
+        }
+      } catch (Exception e) {
+        System.out.println("Entrada no válida. Asegúrate de usar el formato HH:mm. Intenta de nuevo.");
+      }
+    }
+    return time;
+  }
   // endregion
 }
