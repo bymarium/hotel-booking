@@ -8,6 +8,7 @@ import java.util.*;
 public class Main {
   private static List<List<String>> rooms = null;
   private static List<List<String>> hotels = null;
+  private static List<List<String>> reservations = new ArrayList<>();
 
   public static void main(String[] args) {
     menu();
@@ -402,7 +403,7 @@ public class Main {
                                                         int numberOfAdults, int numberOfChildren, int numberOfRooms) {
     long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
 
-    List<List<String>> hotelsNow = updatePriceHotel(rooms, hotels, (int)daysBetween);
+    List<List<String>> hotelsNow = updatePriceHotel(rooms, hotels, (int) daysBetween);
 
     List<String> hotel = getHotelByCityAndHousing(hotelsNow, city, housingType);
     System.out.println("\nHotel seleccionado: ");
@@ -600,15 +601,14 @@ public class Main {
       reservation.add("Precio por noche: " + room.get(2));
       reservation.add("Cantidad: " + room.get(4));
     }
+    System.out.println("******************************");
+    System.out.println("¡RESERVA REALIZADA CON ÉXITO!");
+    System.out.println("******************************");
 
     return reservation;
   }
 
   public static void getReservation(List<String> reservation) {
-    System.out.println("******************************");
-    System.out.println("¡RESERVA REALIZADA CON ÉXITO!");
-    System.out.println("******************************");
-
     System.out.println("\n----------------------------");
     System.out.println("Información del cliente:");
     System.out.println("----------------------------");
@@ -646,13 +646,65 @@ public class Main {
       System.out.println(reservation.get(i + 3));
       System.out.println("----------------------------");
     }
+  }
+
+  public static void addReservations(List<List<String>> reservations, List<String> reservation) {
+    reservations.add(reservation);
+  }
+
+  public static void getReservations(List<List<String>> reservations) {
+    System.out.println("******************************");
+    System.out.println("RESERVAS REALIZADAS:");
+    System.out.println("******************************");
+
+    int count = 1;
+    for (List<String> reservation : reservations) {
+      System.out.println("\n============================");
+      System.out.println("RESERVA #" + count);
+      System.out.println("============================");
+      getReservation(reservation);
+      count++;
+    }
 
     System.out.println("******************************");
-    System.out.println("¡GRACIAS POR ELEGIRNOS!");
+    System.out.println("FIN DE LAS RESERVAS");
     System.out.println("******************************");
   }
 
+  public static void filterAndDisplayReservationsByEmail(List<List<String>> reservations, String email) {
+    System.out.println("******************************");
+    System.out.println("FILTRANDO RESERVAS POR EMAIL: " + email);
+    System.out.println("******************************");
 
+    boolean found = false;
+    int count = 1;
+
+    for (List<String> reservation : reservations) {
+      if (reservation.get(1).equals("Email: " + email)) {
+        if (!found) {
+          System.out.println("\nRESERVAS ENCONTRADAS:");
+          System.out.println("============================");
+        }
+        found = true;
+
+        System.out.println("\n============================");
+        System.out.println("RESERVA #" + count);
+        System.out.println("============================");
+
+        getReservation(reservation);
+
+        count++;
+      }
+    }
+
+    if (!found) {
+      System.out.println("No se encontraron reservas para el email: " + email);
+    }
+
+    System.out.println("******************************");
+    System.out.println("FIN DE LA BÚSQUEDA");
+    System.out.println("******************************");
+  }
   // endregion
 
   // region menu
@@ -722,9 +774,16 @@ public class Main {
         System.out.println("\nIngrese la hora de llegada (HH:mm): ");
         LocalTime arrivalDate = validateTime();
 
-        List<String> revervation = createReservation(hotel, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalDate);
 
-        getReservation(revervation);
+        List<String> reservation = createReservation(hotel, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalDate);
+
+        getReservation(reservation);
+
+        addReservations(reservations, reservation);
+
+        System.out.println("******************************");
+        System.out.println("¡GRACIAS POR ELEGIRNOS!");
+        System.out.println("******************************");
         menu();
         break;
       case 2:
@@ -732,6 +791,12 @@ public class Main {
         System.out.println("       MODIFICAR RESERVA");
         System.out.println("******************************");
 
+        getReservations(reservations);
+
+        System.out.println("\nIngrese el email: ");
+        String emailFind = sc.next();
+
+        filterAndDisplayReservationsByEmail(reservations, emailFind);
         menu();
         break;
       case 3:
