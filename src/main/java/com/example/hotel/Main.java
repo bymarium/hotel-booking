@@ -671,14 +671,58 @@ public class Main {
     System.out.println("******************************");
   }
 
-  public static void filterAndDisplayReservationsByEmail(List<List<String>> reservations, String email) {
+  public static List<String> selectedReservation(List<List<String>> reservations, String email) {
     System.out.println("******************************");
     System.out.println("FILTRANDO RESERVAS POR EMAIL: " + email);
     System.out.println("******************************");
 
-    boolean found = false;
+    List<List<String>> filteredReservations = new ArrayList<>();
     int count = 1;
 
+    for (List<String> reservation : reservations) {
+      if (reservation.get(1).equals("Email: " + email)) {
+        filteredReservations.add(reservation);
+      }
+    }
+
+    if (filteredReservations.isEmpty()) {
+      System.out.println("No se encontraron reservas para el email: " + email);
+    } else {
+      System.out.println("\nRESERVAS ENCONTRADAS:");
+      System.out.println("============================");
+      for (List<String> reservation : filteredReservations) {
+        System.out.println("\n============================");
+        System.out.println("RESERVA #" + count);
+        System.out.println("============================");
+        getReservation(reservation);
+        count++;
+      }
+    }
+    Scanner sc = new Scanner(System.in);
+    int selectedReservation = -1;
+    while (true) {
+      try {
+        System.out.print("\nEscribe el número de la reserva que deseas seleccionar (1-" + filteredReservations.size() + "): ");
+        selectedReservation = sc.nextInt();
+
+        if (selectedReservation > 0 && selectedReservation <= filteredReservations.size()) {
+          return filteredReservations.get(selectedReservation - 1);
+        } else {
+          System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
+        }
+      } catch (Exception e) {
+        System.out.println("Entrada no válida. Inténtalo de nuevo.");
+        sc.next();
+      }
+    }
+  }
+
+  public static void printReservations(List<List<String>> reservations, String email) {
+    System.out.println("******************************");
+    System.out.println("FILTRANDO RESERVAS POR EMAIL: " + email);
+    System.out.println("******************************");
+    boolean found = false;
+    int count = 1;
     for (List<String> reservation : reservations) {
       if (reservation.get(1).equals("Email: " + email)) {
         if (!found) {
@@ -686,23 +730,45 @@ public class Main {
           System.out.println("============================");
         }
         found = true;
-
         System.out.println("\n============================");
         System.out.println("RESERVA #" + count);
         System.out.println("============================");
-
         getReservation(reservation);
-
         count++;
       }
     }
-
     if (!found) {
       System.out.println("No se encontraron reservas para el email: " + email);
     }
 
     System.out.println("******************************");
     System.out.println("FIN DE LA BÚSQUEDA");
+    System.out.println("******************************");
+  }
+
+  public static void removeReservation(List<List<String>> reservations, List<String> reservationToRemove) {
+    System.out.println("\n*******************************************");
+    System.out.println("           ¡ELIMINANDO RESERVA!");
+    System.out.println("*********************************************");
+
+    boolean found = false;
+
+    for (int i = reservations.size() - 1; i >= 0; i--) {
+      List<String> reservation = reservations.get(i);
+      if (reservation.equals(reservationToRemove)) {
+        reservations.remove(i);
+        found = true;
+      }
+    }
+
+    if (found) {
+      System.out.println("Se ha eliminado la reserva correctamente.");
+    } else {
+      System.out.println("No se encontró la reserva.");
+    }
+
+    System.out.println("\n******************************");
+    System.out.println("     FIN DE LA ELIMINACIÓN");
     System.out.println("******************************");
   }
   // endregion
@@ -715,7 +781,8 @@ public class Main {
     System.out.println("¿Qué deseas hacer?");
     System.out.println("(1) Hacer reserva");
     System.out.println("(2) Modificar reserva");
-    System.out.println("(3) Cerrar sesión");
+    System.out.println("(3) Cancelar");
+    System.out.println("Selecciona una opción (1-3): ");
 
     Scanner sc = new Scanner(System.in);
     return sc.nextInt();
@@ -727,63 +794,7 @@ public class Main {
 
     switch (option) {
       case 1:
-        System.out.println("\n******************************");
-        System.out.println("     RESERVA DE ALOJAMIENTO");
-        System.out.println("******************************");
-
-        String city = getCity();
-        String housing = getHousing();
-        System.out.println("\nIngrese la fecha de inicio de la reserva (dd/mm/aaaa): ");
-        LocalDate startDate = validateDate();
-        System.out.println("\nIngrese la fecha de fin de la reserva (dd/mm/aaaa): ");
-        LocalDate endDate = validateDateEnd(startDate);
-        System.out.println("\nIngrese el número de adultos: ");
-        int numberOfAdults = sc.nextInt();
-        System.out.println("\nIngrese el número de niños: ");
-        int numberOfChildren = sc.nextInt();
-        System.out.println("\nIngrese el número de habitaciones: ");
-        int numberOfRooms = sc.nextInt();
-
-        long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
-        if (rooms == null) {
-          rooms = createRooms((int) daysBetween);
-        }
-        if (hotels == null) {
-          hotels = createHotelsValues(100, (int) daysBetween);
-        }
-
-        List<String> hotel = createDesiredAccommodation(rooms, hotels, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
-        List<List<String>> selectedRooms = confirmRooms(rooms, hotel.get(2), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
-
-        calculatePriceWithRooms(hotel, selectedRooms, startDate, endDate, numberOfRooms);
-
-        System.out.println("\n******************************");
-        System.out.println(" DATOS DE LA PERSONA TITULAR");
-        System.out.println("******************************");
-
-        System.out.println("\nIngrese el nombre: ");
-        String name = sc.next();
-        System.out.println("\nIngrese el apellido: ");
-        String lastName = sc.next();
-        System.out.println("\nIngrese el email: ");
-        String email = sc.next();
-        System.out.println("\nIngrese la nacionalidad: ");
-        String nationality = sc.next();
-        System.out.println("\nIngrese el número de teléfono: ");
-        String phone = sc.next();
-        System.out.println("\nIngrese la hora de llegada (HH:mm): ");
-        LocalTime arrivalDate = validateTime();
-
-
-        List<String> reservation = createReservation(hotel, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalDate);
-
-        getReservation(reservation);
-
-        addReservations(reservations, reservation);
-
-        System.out.println("******************************");
-        System.out.println("¡GRACIAS POR ELEGIRNOS!");
-        System.out.println("******************************");
+        makeReservation();
         menu();
         break;
       case 2:
@@ -791,12 +802,47 @@ public class Main {
         System.out.println("       MODIFICAR RESERVA");
         System.out.println("******************************");
 
-        getReservations(reservations);
-
-        System.out.println("\nIngrese el email: ");
+        System.out.println("\nIngrese el email para autenticarse en la reserva: ");
         String emailFind = sc.next();
 
-        filterAndDisplayReservationsByEmail(reservations, emailFind);
+        List<String> reservationSelected = selectedReservation(reservations, emailFind);
+
+        System.out.println("¿Qué deseas hacer?");
+        System.out.println("(1) Cambiar habitacion(es)");
+        System.out.println("(2) Cambiar alojamiento");
+        System.out.println("(3) Cancelar");
+        System.out.println("Selecciona una opción (1-3): ");
+
+        int response = sc.nextInt();
+
+        switch (response) {
+          case 1:
+            System.out.println("\n******************************");
+            System.out.println("    MODIFICAR HABITACION(ES)");
+            System.out.println("******************************");
+
+            break;
+          case 2:
+            System.out.println("\n******************************");
+            System.out.println("    MODIFICAR ALOJAMIENTO");
+            System.out.println("******************************");
+            removeReservation(reservations, reservationSelected);
+
+            printReservations(reservations, emailFind);
+
+            makeReservation();
+            break;
+          case 3:
+            System.out.println("\n******************************");
+            System.out.println("        SESION CERRADA.");
+            System.out.println("******************************");
+
+            break;
+          default:
+            System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
+            sc.next();
+            menu();
+        }
         menu();
         break;
       case 3:
@@ -811,7 +857,69 @@ public class Main {
         menu();
     }
   }
-  // endregion
+
+  public static void makeReservation() {
+    Scanner sc = new Scanner(System.in);
+    System.out.println("\n******************************");
+    System.out.println("     RESERVA DE ALOJAMIENTO");
+    System.out.println("******************************");
+
+    String city = getCity();
+    String housing = getHousing();
+    System.out.println("\nIngrese la fecha de inicio de la reserva (dd/mm/aaaa): ");
+    LocalDate startDate = validateDate();
+    System.out.println("\nIngrese la fecha de fin de la reserva (dd/mm/aaaa): ");
+    LocalDate endDate = validateDateEnd(startDate);
+    System.out.println("\nIngrese el número de adultos: ");
+    int numberOfAdults = sc.nextInt();
+    System.out.println("\nIngrese el número de niños: ");
+    int numberOfChildren = sc.nextInt();
+    System.out.println("\nIngrese el número de habitaciones: ");
+    int numberOfRooms = sc.nextInt();
+
+    long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
+    if (rooms == null) {
+      rooms = createRooms((int) daysBetween);
+    }
+    if (hotels == null) {
+      hotels = createHotelsValues(100, (int) daysBetween);
+    }
+
+    List<String> hotel = createDesiredAccommodation(rooms, hotels, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+    List<List<String>> selectedRooms = confirmRooms(rooms, hotel.get(2), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+
+    calculatePriceWithRooms(hotel, selectedRooms, startDate, endDate, numberOfRooms);
+
+    System.out.println("\n******************************");
+    System.out.println(" DATOS DE LA PERSONA TITULAR");
+    System.out.println("******************************");
+
+    System.out.println("\nIngrese el nombre: ");
+    String name = sc.next();
+    System.out.println("\nIngrese el apellido: ");
+    String lastName = sc.next();
+    System.out.println("\nIngrese el email: ");
+    String email = sc.next();
+    System.out.println("\nIngrese la nacionalidad: ");
+    String nationality = sc.next();
+    System.out.println("\nIngrese el número de teléfono: ");
+    String phone = sc.next();
+    System.out.println("\nIngrese la hora de llegada (HH:mm): ");
+    LocalTime arrivalDate = validateTime();
+
+
+    List<String> reservation = createReservation(hotel, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalDate);
+
+    getReservation(reservation);
+
+    addReservations(reservations, reservation);
+
+    System.out.println("******************************");
+    System.out.println("¡GRACIAS POR ELEGIRNOS!");
+    System.out.println("******************************");
+  }
+
+// endregion
 
   // region validation
   public static LocalDate validateDate() {
@@ -882,5 +990,5 @@ public class Main {
     }
     return time;
   }
-  // endregion
+// endregion
 }
