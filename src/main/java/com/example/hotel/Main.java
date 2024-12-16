@@ -771,6 +771,75 @@ public class Main {
     System.out.println("     FIN DE LA ELIMINACIÓN");
     System.out.println("******************************");
   }
+
+  public static List<String> selectedRoom(List<String> reservation) {
+    System.out.println("\n----------------------------");
+    System.out.println("Información del hotel:");
+    System.out.println("----------------------------");
+    System.out.println(reservation.get(4));
+    System.out.println(reservation.get(5));
+    System.out.println(reservation.get(6));
+    System.out.println(reservation.get(7));
+    System.out.println(reservation.get(8));
+    System.out.println(reservation.get(9));
+
+    System.out.println("\n----------------------------");
+    System.out.println("Habitaciones reservadas:");
+    System.out.println("----------------------------");
+
+    List<List<String>> rooms = new ArrayList<>();
+
+    int roomStartIndex = 14;
+    for (int i = roomStartIndex; i < reservation.size(); i += 4) {
+      List<String> room = new ArrayList<>();
+      room.add(reservation.get(i));
+      room.add(reservation.get(i + 1));
+      room.add(reservation.get(i + 2));
+      room.add(reservation.get(i + 3));
+      rooms.add(room);
+
+      System.out.println(reservation.get(i));
+      System.out.println(reservation.get(i + 1));
+      System.out.println(reservation.get(i + 2));
+      System.out.println(reservation.get(i + 3));
+      System.out.println("----------------------------");
+    }
+
+    Scanner sc = new Scanner(System.in);
+    int selectedRoom;
+
+    while (true) {
+      try {
+        System.out.print("\nEscribe el número de la habitación que deseas seleccionar (1-" + rooms.size() + "): ");
+        selectedRoom = sc.nextInt();
+
+        if (selectedRoom > 0 && selectedRoom <= rooms.size()) {
+          return rooms.get(selectedRoom - 1);
+        } else {
+          System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
+        }
+      } catch (Exception e) {
+        System.out.println("Entrada no válida. Inténtalo de nuevo.");
+        sc.next();
+      }
+    }
+  }
+
+  public static List<String> updateRoomInReservation(List<String> reservation, List<String> oldRoom, List<String> newRoom) {
+    int roomStartIndex = 14;
+
+    for (int i = roomStartIndex; i < reservation.size(); i += 4) {
+      if (reservation.get(i).trim().equals(oldRoom.get(0).trim())) {
+        reservation.set(i, newRoom.get(0));
+        reservation.set(i + 1, newRoom.get(1));
+        reservation.set(i + 2, newRoom.get(2));
+        reservation.set(i + 3, newRoom.get(4));
+        break;
+      }
+    }
+
+    return reservation;
+  }
   // endregion
 
   // region menu
@@ -820,6 +889,39 @@ public class Main {
             System.out.println("\n******************************");
             System.out.println("    MODIFICAR HABITACION(ES)");
             System.out.println("******************************");
+
+
+            List<String> roomSelected = selectedRoom(reservationSelected);
+            String hotelName = reservationSelected.get(6);
+            hotelName = hotelName.replace("Nombre: ", "").trim();
+
+            List<List<String>> availableRooms = new ArrayList<>();
+            for (List<String> room : rooms) {
+              String roomHotelName = room.get(0);
+              if (hotelName.equals(roomHotelName)) {
+                availableRooms.add(room);
+              }
+            }
+
+            List<String> newRoom = getRoomsForHousing(availableRooms, hotelName);
+
+            System.out.print("Ingresa la nueva cantidad de habitaciones para esta reserva: ");
+            int newQuantity = sc.nextInt();
+
+            newRoom.set(4, String.valueOf(newQuantity));
+
+            newRoom.set(0, "Tipo de habitación: " + newRoom.get(1));
+            newRoom.set(1, "Descripción: " + newRoom.get(2));
+            newRoom.set(2, "Precio por noche: $" + newRoom.get(3));
+            newRoom.set(4, "Cantidad: " + newRoom.get(4));
+
+            System.out.println(roomSelected);
+            System.out.println(newRoom);
+
+            List<String> updatedReservation = updateRoomInReservation(reservationSelected, roomSelected, newRoom);
+
+            System.out.println(updatedReservation);
+            getReservation(updatedReservation);
 
             break;
           case 2:
