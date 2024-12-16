@@ -1,14 +1,14 @@
 # Aplicación Booking Hoteles 🏢
 
 ## Tabla de Contenidos 📑
-1. [Descripción del Proyecto 💡](#descripción-del-proyecto)
-2. [Funcionalidades 🛠️](#funcionalidades)
-3. [Cómo Usar la Aplicación 🚀](#cómo-usar-la-aplicación)
+1. [Descripción del Proyecto](#descripción-del-proyecto)
+2. [Funcionalidades](#funcionalidades)
+3. [Cómo Usar la Aplicación](#cómo-usar-la-aplicación)
 
 
 ---
 
-## Descripción del Proyecto 💡
+## Descripción del Proyecto
 
 **Booking Hoteles** es una aplicación que permite realizar reservas en varios tipos de alojamientos como **Hoteles**, **Apartamentos**, **Fincas** y **Días de Sol**. La aplicación está diseñada para facilitar la elección de hospedaje en ciudades turísticas, con funcionalidades como:
 
@@ -19,7 +19,7 @@
 
 ---
 
-## Funcionalidades 🛠️
+## Funcionalidades
 
 ### 1. **Buscar Hoteles**
    El método de búsqueda recibe los siguientes parámetros:
@@ -63,7 +63,7 @@
 
 ---
 
-## Cómo Usar la Aplicación 🚀
+## Cómo Usar la Aplicación
 
 ### 1. Clonar el repositorio
 
