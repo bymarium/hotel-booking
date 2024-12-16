@@ -1,13 +1,10 @@
 # Aplicación Booking Hoteles 🏢
 
 ## Tabla de Contenidos 📑
-1. [Descripción del Proyecto](#descripción-del-proyecto)
-2. [Funcionalidades](#funcionalidades)
-3. [Cómo Usar la Aplicación](#cómo-usar-la-aplicación)
-4. [Estructura del Proyecto](#estructura-del-proyecto)
-5. [Contribuir](#contribuir)
-6. [Licencia](#licencia)
-7. [Contacto](#contacto)
+1. [Descripción del Proyecto 💡](#descripción-del-proyecto)
+2. [Funcionalidades 🛠️](#funcionalidades)
+3. [Cómo Usar la Aplicación 🚀](#cómo-usar-la-aplicación)
+
 
 ---
 
